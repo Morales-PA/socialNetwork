@@ -9,7 +9,7 @@
 
     function openConnectionToDB() {
 
-        $cadena_conexion = 'mysql:dbname=social_network;host=localhost';
+        $cadena_conexion = 'mysql:dbname=redsocial;host=localhost';
         $usuario = 'root';
         $clave = '';
         
@@ -38,7 +38,7 @@
         return $wasStatementSuccessful;
     }
 
-    function read($sqlQuery) {
+    function select($sqlQuery) {
 
         $dbConnection = openConnectionToDB();        
 
