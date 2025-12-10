@@ -1,0 +1,40 @@
+CREATE DATABASE IF NOT EXISTS RedSocial;
+USE RedSocial;
+
+CREATE TABLE Usuarios ( // Como controlar variables efímeras sin necesidad de guardarlas en la base de datos
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(255) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT 0,
+    activo BOOLEAN NOT NULL DEFAULT 0,
+    fechaRegistro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Posts (
+    idPost INT PRIMARY KEY AUTO_INCREMENT,
+    idUsuario INT NOT NULL,
+    fechaPublicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    contenido VARCHAR(1000) NOT NULL,
+    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
+);
+
+CREATE TABLE Comentarios (
+    idComentario INT PRIMARY KEY AUTO_INCREMENT,
+    idPost INT NOT NULL,
+    idUsuario INT NOT NULL,
+    fechaPublicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    contenido VARCHAR(1000) NOT NULL,
+    FOREIGN KEY (idPost) REFERENCES Posts(idPost),
+    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
+);
+
+CREATE TABLE Seguidores (
+    idSeguidor INT NOT NULL,
+    idSeguido INT NOT NULL,
+    estado ENUM('pendiente','aceptado') NOT NULL DEFAULT 'pendiente',
+    PRIMARY KEY (idSeguidor, idSeguido),
+    FOREIGN KEY (idSeguidor) REFERENCES Usuarios(idUsuario),
+    FOREIGN KEY (idSeguido) REFERENCES Usuarios(idUsuario)
+);
+

@@ -1,0 +1,58 @@
+xFuncionalidad básica (máximo 6 puntos)
+
+Bloque obligatorio
+-----
+1. Acceso:
+   - Los usuarios acceden a la aplicación con su email y contraseña, que se almacenan en una base de datos.
+
+2. Usuarios:
+   - Se pueden ver todos los usuarios que hay en la red social.
+   - Si se selecciona alguno, se accederá al perfil de ese usuario.
+
+3. Perfil propio:
+   - Página de perfil del propio usuario.
+   - Aparecen los posts que ha ido publicando a lo largo del tiempo.
+   - Están ordenados por fecha de publicación.
+   - Se muestra el contenido, fecha, hora y número de comentarios de cada uno.
+   - El dueño del perfil puede ver un formulario para crear un nuevo post.
+
+4. Perfil de otro usuario:
+   - Cuando un usuario accede al perfil de otro, puede ver los posts de ese usuario.
+   - Los posts se ordenan por fecha.
+   - Cada uno muestra su contenido, fecha, hora y número de comentarios.
+
+5. Post:
+   - Si desde un perfil se accede a un determinado post, este se mostrará en una nueva vista.
+   - Se verán todos los comentarios que tiene el post (indicando el nombre del usuario que comentó, la fecha y la hora).
+   - Cualquier usuario tiene la posibilidad de añadir un nuevo comentario.
+------
+
+Funcionalidad opcional (0,75 cada una)
+
+Opcionales:
+
+6. Seguir usuarios (si no se realiza esta ampliación, el máximo a obtener será 7 puntos):
+   - Proceso para que, para ver los posts de otro usuario, primero haya que realiza una petición de seguimiento.
+   - Un usuario A solicita seguir al usuario B, y este último debe aceptar la solicitud.
+   - Solo si se acepta, el usuario A podrá ver los posts en la página de perfil del usuario B.
+   - En cualquier momento, un usuario puede dejar de seguir a otro.
+
+7. Buscador de usuarios:
+   - Existe la posibilidad de buscar un usuario escribiendo su nombre.
+   - Para conseguir la puntuación completa, el buscador debe funcionar incluso cuando no se introduzca de manera completa el nombre.
+
+8. Registro:
+   - Proceso realista para que un usuario se registre en la aplicación.
+   - Para conseguir la puntuación completa, tiene que incluir un correo con un enlace para validar el registro.
+
+9. Recuperar contraseña:
+   - Proceso realista para que los usuarios puedan recuperar su contraseña de acceso o generar una nueva.
+   - Si la solución consiste en enviar una nueva contraseña (o la actual), sin tener que realizar más operaciones, solo se obtendrá la mitad de la puntuación.
+
+10. Contraseña cifrada:
+    - Almacenar las contraseñas de acceso de los usuarios "cifradas" en la base de datos.
+
+11. Zona de administración:
+    - Desarrollar una zona de administración solo visible para algunos usuarios (según su rol).
+    - En esta zona hay que implementar tareas propias de un administrador.
+    - Ideas: bloquear/desbloquear usuarios, borrar comentarios, etc.
