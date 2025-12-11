@@ -1,5 +1,9 @@
 <?php
 
+// TODO: 
+// Control user in search mode
+
+
 session_start();
 require_once("crud_operations.php");
 
@@ -33,18 +37,20 @@ Buscar usuarios: <form action="" method="POST"> <!-- Formulario para buscar usua
 
 <?php 
 
-if(!isset($_POST["search"])){
+if (!isset($_POST["search"])) {
 
     try {
-        $filas = select("SELECT * FROM usuarios");
+        $filas = select("SELECT * FROM usuarios WHERE 1=?",["1"]); // FIX: Prepared statements ALWAYS require a tag
+
     } catch (PDOException $e) {
         echo $e; 
-    } if ($filas->rowCount() >= 1) {
+    } 
+    
+    if (count($filas) >= 1) {
 
         foreach($filas as $fila) {
-        if($fila["nombre"] == $_SESSION["whoami"]){ //me salto mi propio usuario
-            continue;
-        }
+
+            if($fila["nombre"] == $_SESSION["whoami"]) { continue; } //me salto mi propio usuario
 ?>      
         <form action="my_profile.php" method="POST">
             <?php echo $fila["nombre"] ?>
@@ -56,11 +62,16 @@ if(!isset($_POST["search"])){
     }
 
 } else {
+
     try {
-        $filas = select("SELECT * FROM usuarios WHERE nombre like '$_POST[search]%'");
+        $filas = select("SELECT * FROM usuarios WHERE nombre like '?%'",[$_POST["search"]]);
+
     } catch (PDOException $e) {
         echo $e; 
-    } if ($filas->rowCount() >= 1) {
+
+    } 
+    
+    if (count($filas) >= 1) {
 
         foreach($filas as $fila) {
 ?>
@@ -71,6 +82,9 @@ if(!isset($_POST["search"])){
         </form>
 <?php 
         }
+    } else {
+
+        echo "No hay usuarios que coincidan con la búsqueda.";
     }
 }
 

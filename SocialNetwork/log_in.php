@@ -7,23 +7,28 @@
 session_start();
 require_once("crud_operations.php");
 
-if(isset($_SESSION["isSessionStarted"])){ //comprobar si la sesion esta iniciada, si lo está, redirigir al afterlogin.php 
+if (isset($_SESSION["isSessionStarted"])) { //comprobar si la sesion esta iniciada, si lo está, redirigir al afterlogin.php 
     header("Location: after_log_in_page.php");
 }
 
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-        try{
-            $filas = select("SELECT * FROM usuarios WHERE correo='$_POST[emailLogIn]' AND contraseña='$_POST[passwordLogIn]'");
-        }catch(PDOException $e){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        try {
+            $filas = select("SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?",[$_POST["emailLogIn"],$_POST["passwordLogIn"]]);
+
+        } catch (PDOException $e) {
             echo $e; 
-        }  
-        if($filas->rowCount() == 1){
+        }
+
+        if (count($filas) == 1) {
+
             foreach($filas as $fila) {
-            $_SESSION["whoami"] = $fila["nombre"];
-            $_SESSION["isSessionStarted"] = true;
-            header("Location: after_log_in_page.php");     
-        }}else{
+                $_SESSION["whoami"] = $fila["nombre"];
+                $_SESSION["isSessionStarted"] = true;
+                header("Location: after_log_in_page.php");     
+            }
+
+        } else {
             header("Location: log_in.php");
         }
     }
