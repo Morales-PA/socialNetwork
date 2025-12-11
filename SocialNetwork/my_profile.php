@@ -1,3 +1,5 @@
+<!-- TO DO: Hacer el select de los post por fecha de publicacion(hacer donde el comentario de abajo)-->
+
 <?php if($_SERVER["REQUEST_METHOD"] == "GET"){header("Location: log_in.php"); }?>
 
 <!DOCTYPE html>
@@ -9,19 +11,21 @@
 </head>
 <body>
 
-    <h1><?php session_start(); 
+    <?php session_start(); 
     
-    if(isset($_POST["nombrecito"])){ //Para sacar el nombre del perfil que estas visitando
-        echo $_POST["nombrecito"];
+    if(isset($_POST["nombrecito"])){ //Para sacar el nombre del perfil que estas visitando, si es el de otro saco su nombre
+        ?><h1><?php    
+        echo $_POST["nombrecito"]; ?> </h1><?php
+    
     }else{
-        echo "Estás en tu perfil, " . $_SESSION["whoami"];
-        }?></h1>
+        ?><h1><?php    
+        echo "Estás en tu perfil, " . $_SESSION["whoami"];?></h1> <!-- Si visitas tu usuario ves tu nombre y puedes añadir un post-->
+        <form action="write_post.php" method="POST">
+        <input type="submit" value="Crear post">
+        </form>
+        <?php }?>
 
-    <form action="write_post.php" method="POST">
-    <input type="submit" value="Crear post">
-    </form>
-
-    <h3>TUS POSTS:</h3>
+    <h3>POSTS:</h3>
     <!-- Hacer select de tus posts ordenados por fecha de publicacion -->
     
 </body>
