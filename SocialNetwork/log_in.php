@@ -1,12 +1,16 @@
 <!-- To fix: hay que conseguir que un usuario pueda iniciar sesion y le redirija al after_log_in_page.php 
 -->
+
 <?php
 //       ' OR 1=1 LIMIT 1 #
 session_start();
 require_once("crud_operations.php");
+
 if(isset($_SESSION["isSessionStarted"])){ //comprobar si la sesion esta iniciada, si lo está, redirigir al afterlogin.php 
     header("Location: after_log_in_page.php");
 }
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
         try{
             $filas = select("SELECT * FROM usuarios WHERE correo='$_POST[emailLogIn]' AND contraseña='$_POST[passwordLogIn]'");
@@ -22,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
