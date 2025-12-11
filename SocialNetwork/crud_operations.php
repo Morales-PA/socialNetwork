@@ -27,48 +27,26 @@
     }
     
     // Is exec really a better fit that query
-    function createUpdateDelete($sqlQuery) {
+    function createUpdateDelete($sqlQuery,$params) {
 
         $dbConnection = openConnectionToDB();        
 
-        $wasStatementSuccessful = $dbConnection->exec($sqlQuery);
-        
+        $tempPdoObject = $dbConnection->prepare($sqlQuery);
+        $tempPdoObject->execute($params);
+
         $dbConnection = null;
 
-        return $wasStatementSuccessful;
     }
 
-    function select($sqlQuery) {
+    function select($sqlQuery,$params) {
 
         $dbConnection = openConnectionToDB();        
 
-        $tempPdoObject = $dbConnection->query($sqlQuery);
-        
+        $tempPdoObject = $dbConnection->prepare($sqlQuery);
+        $tempPdoObject->execute($params);
+        $resultSet = $tempPdoObject->fetchAll();
+
         $dbConnection = null;
 
-        return $tempPdoObject;
-        
+        return $resultSet; 
     }
-
-// function select($sqlQuery, $params = []) {
-
-//     $dbConnection = openConnectionToDB();
-
-//     $stmt = $dbConnection->prepare($sqlQuery);
-//     $stmt->execute($params);
-
-//     return $stmt;  
-// }
-
-// $sql = "SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?";
-// $params = [$_POST['emailLogIn'], $_POST['passwordLogIn']];
-
-// $filas = select($sql, $params);
-
-// if ($filas->rowCount() == 1) {
-//     // LOGIN OK
-// } else {
-//     // ERROR
-// }
-
-
