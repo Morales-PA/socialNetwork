@@ -3,6 +3,7 @@
 
 <?php
 //       ' OR 1=1 LIMIT 1 #
+
 session_start();
 require_once("crud_operations.php");
 
@@ -18,10 +19,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo $e; 
         }  
         if($filas->rowCount() == 1){
+            foreach($filas as $fila) {
+            $_SESSION["whoami"] = $fila["nombre"];
             $_SESSION["isSessionStarted"] = true;
-            $_SESSION["whoami"] = $_POST["emailLogIn"];
-            header("Location: after_log_in_page.php");
-        }else{
+            header("Location: after_log_in_page.php");     
+        }}else{
             header("Location: log_in.php");
         }
     }

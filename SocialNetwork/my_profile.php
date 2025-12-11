@@ -1,4 +1,4 @@
-<?php if($_SERVER["REQUEST_METHOD"] == "POST"){?>
+<?php if($_SERVER["REQUEST_METHOD"] == "GET"){header("Location: log_in.php"); }?>
 
 <!DOCTYPE html>
 <html>
@@ -9,8 +9,13 @@
 </head>
 <body>
 
-    <!-- HACER UN SELECT PARA MOSTRAR EL NOMBRE -->
-    <h1>Jaime Alonso</h1>
+    <h1><?php session_start(); 
+    
+    if(isset($_POST["nombrecito"])){ //Para sacar el nombre del perfil que estas visitando
+        echo $_POST["nombrecito"];
+    }else{
+        echo "Estás en tu perfil, " . $_SESSION["whoami"];
+        }?></h1>
 
     <form action="write_post.php" method="POST">
     <input type="submit" value="Crear post">
@@ -21,7 +26,3 @@
     
 </body>
 </html>
-
-<?php }else{
-    header("Location: log_in.php");
-}?>

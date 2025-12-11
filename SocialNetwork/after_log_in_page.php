@@ -21,6 +21,10 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
 </form> 
 <!-- SI ERES ADMIN TIENES EL BOTON DE ADMINISTRAR AQUI-->
 
+<form action="session_destroy.php" method="POST">
+<input type="submit" value="Cerrar sesión">
+</form> 
+
 <h1>LISTA DE USUARIOS</h1>
 Buscar usuarios: <form action="" method="POST"> <!-- Formulario para buscar usuarios -->
 <input type="text" name="search">
@@ -38,7 +42,10 @@ if(!isset($_POST["search"])){
     } if ($filas->rowCount() >= 1) {
 
         foreach($filas as $fila) {
-?>
+        if($fila["nombre"] == $_SESSION["whoami"]){ //me salto mi propio usuario
+            continue;
+        }
+?>      
         <form action="my_profile.php" method="POST">
             <?php echo $fila["nombre"] ?>
             <input type="hidden" name="nombrecito" value='<?php echo $fila["nombre"]?>'>
@@ -49,7 +56,6 @@ if(!isset($_POST["search"])){
     }
 
 } else {
-    // HACER UN SELECT DE TODOS LOS USUARIOS CON EL VALOR DE $_POST["search"]
     try {
         $filas = select("SELECT * FROM usuarios WHERE nombre like '$_POST[search]%'");
     } catch (PDOException $e) {
