@@ -49,3 +49,24 @@
         return $tempPdoObject;
         
     }
+
+// function select($sqlQuery, $params = []) {
+
+//     $dbConnection = openConnectionToDB();
+
+//     $stmt = $dbConnection->prepare($sqlQuery);
+//     $stmt->execute($params);
+
+//     return $stmt;  
+// }
+
+// $sql = "SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?";
+// $params = [$_POST['emailLogIn'], $_POST['passwordLogIn']];
+
+// $filas = select($sql, $params);
+
+// if ($filas->rowCount() == 1) {
+//     // LOGIN OK
+// } else {
+//     // ERROR
+// }

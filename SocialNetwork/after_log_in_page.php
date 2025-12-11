@@ -1,13 +1,8 @@
 <?php
+session_start();
 require_once("crud_operations.php");
 
-if($_SERVER["REQUEST_METHOD"] == "GET") {header("Location: log_in.php");}
-    try{
-        $filas = select("SELECT * FROM usuarios WHERE correo='$_POST[emailLogIn]' AND contraseña='$_POST[passwordLogIn]'");
-    }catch(PDOException $e){
-        echo $e; 
-    }
-    if($filas->rowCount() == 1){?>
+if(!(isset($_SESSION["isSessionStarted"]))) {header("Location: log_in.php");}?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +25,13 @@ Buscar usuarios: <form action="" method="POST"> <!-- Formulario para buscar usua
 </form>                        <!-- Fin formulario para buscar usuarios -->
 
 <?php 
+if(isset($_SESSION["whoami"])){
+    echo $_SESSION["whoami"];
+}else{
+    echo "no existe";
+}
+
 if(!isset($_POST["search"])){
-    // HACER UN SELECT DE TODOS LOS USUARIOS 
     try{
         $filas = select("SELECT * FROM usuarios");
     }catch(PDOException $e){
@@ -39,26 +39,29 @@ if(!isset($_POST["search"])){
     }if($filas->rowCount() >= 1){
         foreach($filas as $fila){?>
         <form action="my_profile.php" method="POST">
-            <input type="hidden" name="nombrecito" value=<?php echo $fila["nombre"]?>>
+            <?php echo $fila["nombre"] ?>
+            <input type="hidden" name="nombrecito" value='<?php echo $fila["nombre"]?>'>
+            <input type="submit" value="ver perfil">
         </form>
     <?php }
      } 
-
-    // Todos los usuarios vienen en un formulario con el nombre y con un boton submit que ponga acceder al perfil
-?><br>
-    Ejemplo de usuario:
-    <form action="view_posts.php" method="Post"></form>
-        Jaime Alonso <input type="submit" value="acceder al perfil">
-    </form>
-    <?php
 }else{
     // HACER UN SELECT DE TODOS LOS USUARIOS CON EL VALOR DE $_POST["search"]
+    try{
+        $filas = select("SELECT * FROM usuarios WHERE nombre like '%$_POST[search]'");
+    }catch(PDOException $e){
+        echo $e; 
+    }if($filas->rowCount() >= 1){
+        foreach($filas as $fila){?>
+        <form action="my_profile.php" method="POST">
+            <?php echo $fila["nombre"] ?>
+            <input type="hidden" name="nombrecito" value='<?php echo $fila["nombre"]?>'>
+            <input type="submit" value="ver perfil">
+        </form>
+    <?php }
+     }
 }
 
 ?>
 </body>
 </html>
-
-<?php }else{
-    header("Location: log_in.php");}
-?>
