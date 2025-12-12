@@ -1,4 +1,6 @@
-<?php if($_SERVER["REQUEST_METHOD"] == "POST"){?>
+<?php 
+    if($_SERVER["REQUEST_METHOD"] == "POST") {
+?>
 
 <!DOCTYPE html>
 <html>
@@ -15,6 +17,8 @@
 </body>
 </html>
 
-<?php }else{
-    header("Location: log_in.php");
-}?>
+<?php 
+    } else {
+        header("Location: log_in.php");
+    }
+?>
