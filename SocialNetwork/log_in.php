@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             foreach($filas as $fila) {
                 $_SESSION["whoami"] = $fila["nombre"];
+                $_SESSION["userIdToSearch"] = $fila["idUsuario"];
                 $_SESSION["isSessionStarted"] = true;
                 header("Location: after_log_in_page.php");     
             }
