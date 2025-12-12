@@ -19,6 +19,7 @@
 </body>
 </html>
 
-<?php }else{
+<?php 
+    } else {
     header("Location: log_in.php");
 }?>

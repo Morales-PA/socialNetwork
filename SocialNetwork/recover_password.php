@@ -1,5 +1,12 @@
 <?php 
-if($_SERVER["REQUEST_METHOD"] == "POST"){?>
+
+// TODO: 
+// Control user in search mode
+session_start();
+require_once("crud_operations.php");
+if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -12,9 +19,3 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){?>
     
 </body>
 </html>
-
-<?php 
-} else {
-    header("Location: log_in.php");
-}
-?>

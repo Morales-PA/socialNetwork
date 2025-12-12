@@ -1,14 +1,9 @@
 <?php
-
 // TODO: 
 // Control user in search mode
-
-
 session_start();
 require_once("crud_operations.php");
-
 if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
-
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +20,8 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
 </form> 
 <!-- SI ERES ADMIN TIENES EL BOTON DE ADMINISTRAR AQUI-->
 
-<form action="session_destroy.php" method="POST">
+<!-- // TOFIX: Is it really safer to use files instedad of method which are their benefits -->
+<form action="session_destroy.php" method="POST"> 
 <input type="submit" value="Cerrar sesión">
 </form> 
 
@@ -64,17 +60,18 @@ if (!isset($_POST["search"])) {
 } else {
 
     try {
-        $filas = select("SELECT * FROM usuarios WHERE nombre like '?%'",[$_POST["search"]]);
+        $filas = select("SELECT * FROM usuarios WHERE nombre LIKE ?", ['%' . $_POST["search"] . '%']);
 
     } catch (PDOException $e) {
         echo $e; 
-
     } 
     
     if (count($filas) >= 1) {
 
         foreach($filas as $fila) {
-?>
+
+            if($fila["nombre"] == $_SESSION["whoami"]) { continue; } 
+?>  
         <form action="my_profile.php" method="POST">
             <?php echo $fila["nombre"] ?>
             <input type="hidden" name="nombrecito" value='<?php echo $fila["nombre"]?>'>
@@ -83,7 +80,6 @@ if (!isset($_POST["search"])) {
 <?php 
         }
     } else {
-
         echo "No hay usuarios que coincidan con la búsqueda.";
     }
 }
