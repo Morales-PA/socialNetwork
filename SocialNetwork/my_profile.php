@@ -1,8 +1,17 @@
 <!-- TO DO: Hacer el select de los post por fecha de publicacion(hacer donde el comentario de abajo)-->
 
-<?php if($_SERVER["REQUEST_METHOD"] == "GET"){header("Location: log_in.php"); }?>
+<?php 
+session_start();
 
-<!DOCTYPE html>
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    header("Location: my_profile.php");
+}
+
+if(isset($_SESSION["isSessionStarted"]) && $_SESSION["isSessionStarted"] == true){
+
+    require_once("crud_operations.php");
+?>
+    <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -11,7 +20,7 @@
 </head>
 <body>
 
-    <?php session_start(); 
+    <?php
     
     if(isset($_POST["nombrecito"])){ //Para sacar el nombre del perfil que estas visitando, si es el de otro saco su nombre
         ?><h1><?php    
@@ -30,3 +39,8 @@
     
 </body>
 </html>
+
+<?php }else{
+    header("Location: log_in.php");
+} ?>
+
