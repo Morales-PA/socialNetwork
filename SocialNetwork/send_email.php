@@ -2,9 +2,14 @@
 // TODO: 
 // Control user in search mode
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
 require_once("crud_operations.php");
-if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
 
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+	header("Location: log_in.php");
+}
+
+if(isset($_POST["registerEmail"]) && isset($_POST["registerName"]) && isset($_POST["registerPassword"]) ) {
 ?>
 
 <!DOCTYPE html>
@@ -15,14 +20,8 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
     <title>Enviar Email</title>
 </head>
 <body>
-    
-
-    <?php // HAY QUE MIRAR LA PAGINA ENTERA ?>
-    
-
-    <?php 	
- 	// use PHPMailer\PHPMailer\PHPMailer;
- 	require "Extensions/autoload.php"; //ubicacion del autoload
+    <?php
+ 	require_once("C:/xampp/htdocs/TurnoMañana/SocialNetwork/Extensions/vendor/autoload.php"); //ubicacion del autoload
  	$mail = new PHPMailer();
  	$mail->isSMTP();
  	// cambiar a 0 para no ver mensajes de error
@@ -31,21 +30,21 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
  	$mail->SMTPSecure = "tls";                 
 	$mail->Host = 'sandbox.smtp.mailtrap.io';  
 	$mail->Port = 2525;
-	
+
 	// introducir usuario de google
 	$mail->Username   = "13e1f2d1098c7f"; 
 	// introducir clave
 	$mail->Password   = "d6e304757e882d";   	
-	$mail->SetFrom('user@gmail.com', 'Test');
+	$mail->SetFrom('paginajuanyjaime@gmail.com', 'Juan y Jaime');
 	// asunto
-	$mail->Subject    = "Correo de prueba";
+	$mail->Subject = "Correo para confirmar registro con contraseña" . $_POST["registerPassword"];
 	// cuerpo
-	$mail->MsgHTML('Prueba');
+	$mail->MsgHTML("Confirmar registro aqui \n\n http://localhost/TurnoMa%c3%b1ana/SocialNetwork/confirm_account.php");
 	// adjuntos
-	$mail->addAttachment("empleado.xsd");
+	// $mail->addAttachment("");
 	// destinatario
-	$address = "jaimeacicuendez@gmail.com";
-	$mail->AddAddress($address, "Test");
+	$address = $_POST["registerEmail"];
+	$mail->AddAddress($address, $_POST["registerName"]);
 	// enviar
 	$resul = $mail->Send();
 	if(!$resul) {
@@ -61,3 +60,6 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
 
 </body>
 </html>
+<?php } 
+?>
+
