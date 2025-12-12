@@ -2,6 +2,7 @@
 
 // TODO: 
 // Control user in search mode
+if($_SERVER["REQUEST_METHOD"] == "GET"){header("Location: log_in.php");}
 session_start();
 require_once("crud_operations.php");
 ?>
