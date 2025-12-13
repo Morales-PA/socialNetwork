@@ -1,10 +1,10 @@
 -- Insert 4 users into the Usuarios table
 INSERT INTO Usuarios (nombre, correo, contraseña, admin, activo)
 VALUES 
-('User1', 'user1@example.com', 'password1', 0, 1),
-('User2', 'user2@example.com', 'password2', 0, 1),
-('User3', 'user3@example.com', 'password3', 0, 1),
-('User4', 'user4@example.com', 'password4', 0, 1);
+('User1', 'user1@example.com', '$2y$10$QbERimcev6WAj9H3.c/6KO2kFtJ/cQUmfe5c.zPxfaMFWzVsB2wmC', 0, 1),
+('User2', 'user2@example.com', '$2y$10$kwzVAIBcDyrB7Qz8645mSucLT.8V8sz7rwFI8jnQB.WrAEb9XtFfu', 0, 1),
+('OscarHueso', 'oscarHueso@gmail.com', '$2y$10$BVo.Ixn5RW.y/C/clPp3A.mc86WY2IvnYMbQm.VezTDInIpL8.Vfi', 0, 1),
+('Ahmad', 'ahmad@gmail.com', '$2y$10$2mBqfmPFaHarnZPm1ZhbIOL.fALO29gOPVm5sleBT58kKF1UV9QVC', 0, 1);
 
 -- Insert 2 posts for each user
 INSERT INTO Posts (idUsuario, contenido)

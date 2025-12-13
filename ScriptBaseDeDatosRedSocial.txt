@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS RedSocial;
 USE RedSocial;
 
-CREATE TABLE Usuarios ( // Como controlar variables efímeras sin necesidad de guardarlas en la base de datos
+CREATE TABLE Usuarios (
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
