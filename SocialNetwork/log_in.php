@@ -11,25 +11,29 @@ if (isset($_SESSION["isSessionStarted"])) { //comprobar si la sesion esta inicia
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST["emailLogIn"]) && isset($_POST["passwordLogIn"])){
         try {
-            $filas = select("SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?",[$_POST["emailLogIn"],$_POST["passwordLogIn"]]);
+            $filas = select("SELECT * FROM usuarios WHERE correo = ?",[$_POST["emailLogIn"]]);
 
         } catch (PDOException $e) {
             echo $e; 
         }
-
         if (count($filas) == 1) {
-
             foreach($filas as $fila) {
+                $salt = "impossibletoguess";
+                if(password_verify($_POST["passwordLogIn"] . $salt, $fila["contraseña"])){
                 $_SESSION["whoami"] = $fila["nombre"];
                 $_SESSION["userIdToSearch"] = $fila["idUsuario"];
                 $_SESSION["isSessionStarted"] = true;
                 header("Location: after_log_in_page.php");     
+                }
+                
             }
 
         } else {
             header("Location: log_in.php");
         }
+    }
     }
 ?>
 

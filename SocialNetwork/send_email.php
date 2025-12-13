@@ -71,6 +71,16 @@ try { //Comprobar que no exista ese nombre de usuario
           </form>';
 		  exit();  
     }
+
+	//Insertamos el usuario sin activar la cuenta (activo = 0)
+	$salt = "impossibletoguess";
+	$passwordToHash = $registerPassword . $salt;
+	$hashedPassword = password_hash($passwordToHash, PASSWORD_DEFAULT);
+	try {
+	createUpdateDelete("INSERT INTO usuarios (correo, nombre, contraseña) VALUES (?, ?, ?)", [$registerEmail, $registerName, $hashedPassword]);
+	} catch (PDOException $e) {
+        echo $e; 
+    }
 ?>
     <?php
  	require_once("Extensions/vendor/autoload.php"); //ubicacion del autoload
@@ -93,8 +103,10 @@ try { //Comprobar que no exista ese nombre de usuario
 	// asunto
 	$mail->Subject = "Correo para confirmar registro";
 	// cuerpo
-	$mail->MsgHTML("Confirmar registro aqui \n\n <a href:'http://localhost/SocialNetwork/confirm_account.php'>Confirmar registro</a>");
-	// adjuntos
+	$token = hash('sha256', $registerEmail . $salt);
+	$mail->MsgHTML("Confirma tu registro haciendo click en el siguiente enlace:<br><br>
+	<a href='http://localhost/SocialNetwork/confirm_account.php?token=$token'>Confirmar cuenta</a>");
+	// adjuntos 
 	// $mail->addAttachment("");
 	// destinatario
 	$address = $registerEmail;
@@ -105,6 +117,9 @@ try { //Comprobar que no exista ese nombre de usuario
 	  echo "Error" . $mail->ErrorInfo;
 	} else {
 	  echo "Enviado";
+	  echo '<form action="log_in.php" method="POST">
+            <input type="submit" value="Ir al login">
+          </form>';
 	}
 
     ?>
