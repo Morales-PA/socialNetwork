@@ -4,8 +4,7 @@
 // Control user in search mode
 session_start();
 require_once("crud_operations.php");
-if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
-
+if ($_SERVER["REQUEST_METHOD"] == "GET"){header("Location: log_in.php");}
 ?>
 
 <!DOCTYPE html>
@@ -13,9 +12,15 @@ if(!(isset($_SESSION["isSessionStarted"]))) { header("Location: log_in.php"); }
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar contraseña</title>
+    <title>Cambiar contraseña</title>
 </head>
 <body>
-    
+    <form action="email_to_recover_password.php" method="POST">
+        Introduce tu correo para cambiar la contraseña: 
+        <input type="text" name="emailToRecoverPassword">
+        <input type="submit">
+    </form>    
+
+
 </body>
 </html>

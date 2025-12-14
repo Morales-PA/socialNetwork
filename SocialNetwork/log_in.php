@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>                    <!-- Fin formulario Login -->
 
     <form action="recover_password.php" method="POST"> <!-- Formulario recuperar contraseña -->
-        <input type="submit" value="Recuperar contraseña">
+        <input type="submit" value="He olvidado mi contraseña">
     </form><br>                             <!-- Fin formulario recuperar contraseña -->
 
      <h3>¿No tienes cuenta? Registrate Aquí⬇⬇</h3>   <!-- Formulario registrarse -->

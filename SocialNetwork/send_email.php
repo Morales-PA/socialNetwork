@@ -106,8 +106,6 @@ try { //Comprobar que no exista ese nombre de usuario
 	$token = hash('sha256', $registerEmail . $salt);
 	$mail->MsgHTML("Confirma tu registro haciendo click en el siguiente enlace:<br><br>
 	<a href='http://localhost/SocialNetwork/confirm_account.php?token=$token'>Confirmar cuenta</a>");
-	// adjuntos 
-	// $mail->addAttachment("");
 	// destinatario
 	$address = $registerEmail;
 	$mail->AddAddress($address, $registerName);
@@ -116,7 +114,7 @@ try { //Comprobar que no exista ese nombre de usuario
 	if(!$resul) {
 	  echo "Error" . $mail->ErrorInfo;
 	} else {
-	  echo "Enviado";
+	  echo "Te hemos enviado un correo para que confirmes la creacion de usuario";
 	  echo '<form action="log_in.php" method="POST">
             <input type="submit" value="Ir al login">
           </form>';
