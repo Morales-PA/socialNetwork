@@ -13,16 +13,17 @@
     </head>
 
     <body>
+        
+        <a href="my_profile.php">
+          <button>Ir a perfil</button>
+        </a>
 
-        <form action="my_profile.php" method="POST">
-            <input type="submit" value="Mi perfil">
-        </form> 
         <!-- SI ERES ADMIN TIENES EL BOTON DE ADMINISTRAR AQUI-->
-
+        
         <!-- // TOFIX: Is it really safer to use files instedad of method which are their benefits -->
-        <form action="session_destroy.php" method="POST"> 
-            <input type="submit" value="Cerrar sesión">
-        </form> 
+        <a href="session_destroy.php">
+          <button>Cerrar sesión</button>
+        </a> 
 
         <h1>LISTA DE USUARIOS</h1>
         Buscar usuarios: 
@@ -36,7 +37,7 @@
         if (!isset($_POST["search"])) {
 
             try {
-                $filas = select("SELECT * FROM usuarios WHERE 1=?",["1"]); // FIX: Prepared statements ALWAYS require a tag
+                $filas = select("SELECT * FROM usuarios",[]); // FIX: Prepared statements ALWAYS require a tag
 
             } catch (PDOException $e) {
                 echo $e; 
@@ -46,13 +47,16 @@
 
                 foreach($filas as $fila) {
 
-                    if($fila["nombre"] == $_SESSION["whoami"]) { continue; } //me salto mi propio usuario
+                    if($fila["nombre"] == $_SESSION["userInfo"][1]) { continue; } //me salto mi propio usuario
         ?>      
-                    <form action="my_profile.php" method="POST">
-                        <?php echo $fila["nombre"] ?>
-                        <input type="hidden" name="nombrecito" value='<?php echo $fila["nombre"]?>'>
+                    <form action="other_profiles.php" method="POST">
+                    <?php echo $fila["nombre"]; ?>
+                        <input type="hidden" name="idUsuario" value="<?php echo $fila['idUsuario']; ?>">
+                        <input type="hidden" name="nombre" value="<?php echo $fila['nombre']; ?>">
+                        <input type="hidden" name="correo" value="<?php echo $fila['correo']; ?>">
                         <input type="submit" value="ver perfil">
                     </form>
+
         <?php 
                 }
             }
@@ -70,13 +74,16 @@
 
                 foreach($filas as $fila) {
 
-                    if($fila["nombre"] == $_SESSION["whoami"]) { continue; } 
+                    if($fila["nombre"] == $_SESSION["userInfo"][1]) { continue; } 
         ?>  
-                    <form action="my_profile.php" method="POST">
-                        <?php echo $fila["nombre"] ?>
-                        <input type="hidden" name="nombrecito" value='<?php $_SESSION["nombre2"] = [$fila["idUsuario"],$fila["nombre"]]?>'>
+                    <form action="other_profiles.php" method="POST">
+                        <?php echo $fila["nombre"]; ?>
+                        <input type="hidden" name="idUsuario" value="<?php echo $fila['idUsuario']; ?>">
+                        <input type="hidden" name="nombre" value="<?php echo $fila['nombre']; ?>">
+                        <input type="hidden" name="correo" value="<?php echo $fila['correo']; ?>">
                         <input type="submit" value="ver perfil">
                     </form>
+
         <?php 
                 }
 

@@ -1,11 +1,6 @@
 <?php
-    // THings to Know
-    // CRUD operations 
-    // Returns a PDOStatement object or false on failure. 
-
     // TODO:
     // Make it able to run as transactions
-    // Make read fucntions throw exceptions
 
     function openConnectionToDB() {
 
@@ -39,7 +34,7 @@
     }
 
     function select($sqlQuery,$params) {
-
+        
         $dbConnection = openConnectionToDB();        
 
         $tempPdoObject = $dbConnection->prepare($sqlQuery);

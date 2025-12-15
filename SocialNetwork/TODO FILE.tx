@@ -1,4 +1,0 @@
-after_log_in.php:
-    - Making variable sessions to manage the users being searched in the SQL database
-    -Add admin control buttons 
-    <!-- // TOFIX: Is it really safer to use files instedad of method which are their benefits -->

@@ -1,4 +1,3 @@
-<!-- TO DO: Hacer el select de los post por fecha de publicacion(hacer donde el comentario de abajo)-->
 <?php
     session_start();
     require_once("crud_operations.php");
@@ -14,25 +13,61 @@
     </head>
     <body>
 
-    <?php    
-        if (isset($_POST["nombrecito"])) { //Para sacar el nombre del perfil que estas visitando, si es el de otro saco su nombre
+    <?php     
+            echo "<h1>" . $_SESSION["userInfo"][1]  . "</h1>";
+    ?>        
+            <a href="publish_post.php">
+                <button>Publicar post</button>
+            </a>
+            <br>
+            <a href="after_log_in_page.php">
+                <button>Volver</button>
+            </a>
+            <br>
+            <a href="follow_request.php">
+                <button>Solicitudes</button>
+            </a>
+            <br>
+            <br>
+            <br>
 
-           echo "<h1>" . $_POST["nombrecito"] . "</h1>";
-   
-        } else {
-            // <!-- Si visitas tu usuario ves tu nombre y puedes añadir un post-->
-            echo "</h1>" . "Estás en tu perfil, " . $_SESSION["whoami"] . " </h1>"; 
-    ?>
-            
-            <form action="write_post.php" method="POST">
-            <input type="submit" value="Crear post">
-            </form>      
     <?php 
+        
+        try {
+            $userPosts = select("SELECT * FROM posts WHERE idUsuario = ? ORDER BY fechaPublicacion DESC",[$_SESSION["userInfo"][0]]);
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+
+        foreach ($userPosts as $post) { 
+            
+            try {
+                $userPostComments = select("SELECT * FROM comentarios WHERE idPost = ?",[$post["idPost"]]);
+                $amountOfComments = select("SELECT COUNT(*) FROM comentarios WHERE idPost = ?",[$post["idPost"]]);
+                
+            } catch (PDOException $e) {
+                echo $e;
+            }
+            
+             echo "
+            <article>
+                <p><strong>Publicado el:</strong> {$post['fechaPublicacion']}</p>
+
+                <p>{$post['contenido']}</p>
+
+                <p><strong>Número de comentarios:</strong> {$amountOfComments[0][0]}</p>
+            </article>";
+    ?>
+                <form action="view_post.php" method="POST">
+                        <input type="hidden" name="idPost" value="<?php echo $post["idPost"]; ?>">
+                        <input type="submit" value="Ver post">
+                    </form>
+
+    <?php 
+            echo "<hr>";
         }
     ?>
-
-        <h3>POSTS:</h3>
-        <!-- Hacer select de tus posts ordenados por fecha de publicacion -->
-
+  
     </body>
 </html>
