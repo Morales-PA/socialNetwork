@@ -9,7 +9,15 @@
         $_SESSION["userToShow"] = [$_POST["idUsuario"],$_POST["nombre"],$_POST["correo"]];
         header("Location: other_profiles.php");
     }
-?>
+
+    try {
+        $isUserAFollower = select("SELECT * FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'aceptado'",[$_SESSION["userInfo"][0],$_SESSION["userToShow"][0]]);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    
+    
+    ?>
 
 
 <!DOCTYPE html>
@@ -20,8 +28,10 @@
         <title>Mi Perfil</title>
     </head>
     <body>
-
-    <?php     
+        
+        <?php     
+    if (count($isUserAFollower) < 1) {
+            echo "No sigues al usuario, síguele para poder ver sus posts.";    
             echo "<h1>" . $_SESSION["userToShow"][1]  . "</h1>";
     ?>        
             <a href="after_log_in_page.php">
@@ -35,7 +45,24 @@
             <br>
             <br>
     <?php 
-        
+    
+    } else {
+            
+            echo "<h1>" . $_SESSION["userToShow"][1]  . "</h1>";
+    ?>
+            <a href="after_log_in_page.php">
+                <button>Volver</button>
+            </a>
+            <a href="">
+                <button>Dejar de seguir usuario</button>
+            </a>
+            <br>
+            <br>
+            <br>
+            <br>
+    <?php 
+
+
         try {
             $userPosts = select("SELECT * FROM posts WHERE idUsuario = ? ORDER BY fechaPublicacion DESC",[$_SESSION["userToShow"][0]]);
 
@@ -70,6 +97,7 @@
     <?php 
             echo "<hr>";
         }
+    }
     ?>
   
     </body>

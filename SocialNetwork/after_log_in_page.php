@@ -37,7 +37,7 @@
         if (!isset($_POST["search"])) {
 
             try {
-                $filas = select("SELECT * FROM usuarios",[]); // FIX: Prepared statements ALWAYS require a tag
+                $filas = select("SELECT * FROM usuarios WHERE activo = 1",[]); // FIX: Prepared statements ALWAYS require a tag
 
             } catch (PDOException $e) {
                 echo $e; 

@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST["emailLogIn"],$_POST["passwordLogIn"])){
         
         try {
-            $filas = select("SELECT * FROM usuarios WHERE correo = ?",[$_POST["emailLogIn"]]);
+            $filas = select("SELECT * FROM usuarios WHERE correo = ? AND activo = 1",[$_POST["emailLogIn"]]);
 
         } catch (PDOException $e) {
             echo $e; 
