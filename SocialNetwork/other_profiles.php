@@ -10,14 +10,46 @@
         header("Location: other_profiles.php");
     }
 
-    try {
-        $isUserAFollower = select("SELECT * FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'aceptado'",[$_SESSION["userInfo"][0],$_SESSION["userToShow"][0]]);
-    } catch (PDOException $e) {
-        echo $e;
-    }
-    
-    
-    ?>
+        
+
+    // Comprobar si el usuario solicita seguir.
+        if (isset($_POST['isUserRequestingToFollow'])) {
+                
+            try {
+                $existingFollow = select("SELECT * FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'pendiente'", [$_SESSION["userInfo"][0], $_SESSION["userToShow"][0]]);
+            
+            if (count($existingFollow) > 0) {
+                echo "Ya has mandado tu solicitud de seguimiento.";
+            } else {
+                
+                $insertFollowRequest = select("INSERT INTO seguidores (idSeguidor, idSeguido, estado) VALUES (?, ?, 'pendiente')", [$_SESSION["userInfo"][0], $_SESSION["userToShow"][0]]);
+                echo "Solicitud mandada.";
+
+            }
+            } catch (PDOException $e) {
+                echo $e;
+            }
+        }
+    // Comprobar si el usuario solicita dejar seguir.
+        if (isset($_POST["isUserRequestingToUnFollow"])) {
+            
+            try {
+                $existingFollow = select("SELECT * FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'aceptado'", [$_SESSION["userInfo"][0], $_SESSION["userToShow"][0]]);
+                
+                if (count($existingFollow) > 0) {
+
+                    $unfollow = select("DELETE FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'aceptado'", [$_SESSION["userInfo"][0], $_SESSION["userToShow"][0]]);
+                    echo "Has dejado de seguir a este usuario.";            
+                    header("Location: other_profiles.php");
+
+                } else {
+                    echo "No estás siguiendo a este usuario.";
+                }
+            } catch (PDOException $e) {
+                echo $e;
+            }
+        }
+?>
 
 
 <!DOCTYPE html>
@@ -29,17 +61,26 @@
     </head>
     <body>
         
-        <?php     
+    <?php     
+
+    try {
+        $isUserAFollower = select("SELECT * FROM seguidores WHERE idSeguidor = ? AND idSeguido = ? AND estado = 'aceptado'",[$_SESSION["userInfo"][0],$_SESSION["userToShow"][0]]);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+
+
     if (count($isUserAFollower) < 1) {
-            echo "No sigues al usuario, síguele para poder ver sus posts.";    
             echo "<h1>" . $_SESSION["userToShow"][1]  . "</h1>";
     ?>        
             <a href="after_log_in_page.php">
                 <button>Volver</button>
             </a>
-            <a href="">
-                <button>Seguir usuario</button>
-            </a>
+            <br>
+            <form action="" method="POST">
+                <input type="hidden" name="isUserRequestingToFollow" value="true">
+                <input type="submit" value="Seguir a usuario">
+            </form>
             <br>
             <br>
             <br>
@@ -53,9 +94,10 @@
             <a href="after_log_in_page.php">
                 <button>Volver</button>
             </a>
-            <a href="">
-                <button>Dejar de seguir usuario</button>
-            </a>
+            <form action="" method="POST">
+                <input type="hidden" name="isUserRequestingToUnFollow" value="true">
+                <input type="submit" value="Dejar de seguir a usuario">
+            </form>
             <br>
             <br>
             <br>
